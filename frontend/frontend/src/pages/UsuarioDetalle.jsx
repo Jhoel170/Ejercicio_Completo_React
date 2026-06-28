@@ -25,7 +25,9 @@ const UsuarioDetalle = (props) => {
                 <button onClick={() => navegar(`/usuarios/editar/${id}`)}>Editar</button>
                 <button onClick={() => {onEliminar(usuario.id); navegar("/usuarios")}} >Eliminar</button>
             </div>
-            
+            <div>
+                <button onClick={() => navegar("/Usuarios")}>Volver</button>
+            </div>
         </div>
     )
 }

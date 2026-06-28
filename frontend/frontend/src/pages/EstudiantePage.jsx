@@ -1,35 +1,34 @@
 import Estudiante from "../components/Estudiante";
 import { useNavigate } from "react-router-dom";
-import EstudianteForm from "../components/EstudianteForm";
 
 const EstudiantePage = (props) => {
-    const {estudiantes} = props;
+    const { estudiantes } = props;
     const navegar = useNavigate();
-
-    
-
+    const rol = localStorage.getItem('rol');
 
     return (
         <div>
-            <button onClick={() => navegar("/estudiantes/nuevo")}>+</button>
-            <button onClick= {() =>{
-                localStorage.clear('token')
+            {rol === "admin" && (
+                <button onClick={() => navegar("/estudiantes/nuevo")}>+</button>
+            )}
+            <button onClick={() => {
+                localStorage.clear()
                 navegar("/Usuarios/login")
-
             }}>Cerrar sesión</button>
             {
-                estudiantes.map((estudiante)=>
+                estudiantes.map((estudiante) =>
                     <div key={estudiante.id}>
-                    <Estudiante
-                    nombre={estudiante.nombre}
-                    edad={estudiante.edad}
-                    url={estudiante.url}/>
-                    <button onClick={()=>navegar(`/estudiantes/detalle/${estudiante.id}`)}>Detalle</button>
+                        <Estudiante
+                            nombre={estudiante.nombre}
+                            edad={estudiante.edad}
+                            url={estudiante.url} />
+                        <button onClick={() => navegar(`/estudiantes/detalle/${estudiante.id}`)}>Detalle</button>
                     </div>
-                    
                 )
             }
-            <button onClick={()=>navegar('/Usuarios')}>Ver Usuarios</button>
+            {rol === "admin" && (
+                <button onClick={() => navegar('/Usuarios')}>Ver Usuarios</button>
+            )}
         </div>
     );
 }

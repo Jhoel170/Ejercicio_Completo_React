@@ -65,12 +65,17 @@ module.exports.loginUsuario = async (req, res) =>{
     const { email, password } = req.body;
     const emailEncontrado = await Usuario.findOne({email})
     if (emailEncontrado && (await bcrypt.compare(password, emailEncontrado.password))){
-        res.json({mensaja: "Login correcto", email: emailEncontrado.email, token: generarToken(emailEncontrado.id)})
+        res.json({
+            mensaje: "Login correcto",
+            email: emailEncontrado.email,
+            rol: emailEncontrado.rol,
+            token: generarToken(emailEncontrado.id, emailEncontrado.rol)
+        })
     }else{
         res.status(400).json({mensaje: 'No valido, intente otra vez'})
     }
 }
 
-const generarToken = (id) => {
-    return jwt.sign({id}, contraseña, {expiresIn: '1d'})
+const generarToken = (id, rol) => {
+    return jwt.sign({id, rol}, contraseña, {expiresIn: '1d'})
 }

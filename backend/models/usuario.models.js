@@ -12,6 +12,11 @@ const UsuarioSchema = new mongoose.Schema({
     password: {
         type: String,
         required: [true, "Contraseña es obligatoria"]
+    },
+    rol: {
+        type: String,
+        enum: ["admin", "visualizador"],
+        default: "visualizador"
     }
 },
 {

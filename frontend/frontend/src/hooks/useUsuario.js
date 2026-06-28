@@ -71,7 +71,7 @@ export const useUsuario = () => {
                 
                 const tokenNuevo = res.data.token
                 localStorage.setItem('token', tokenNuevo)
-                
+                localStorage.setItem('rol', res.data.rol)
                 return true;
 
             })

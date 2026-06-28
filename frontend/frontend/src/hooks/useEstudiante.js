@@ -6,6 +6,7 @@ export const useEstudiante = () => {
     
     const [estudiantes, setEstudiantes] = useState([]);
      useEffect(() => {
+        const token = localStorage.getItem('token')
         api.get("/estudiantes", {headers: {Authorization: `Bearer ${token}`}})
             .then((res) => {
                 setEstudiantes(res.data)
@@ -16,6 +17,7 @@ export const useEstudiante = () => {
     }, [token])
 
     const agregarEstudiante = (nuevoEstudiante) => {
+        const token = localStorage.getItem('token')
         console.log(token);
         return api.post("/estudiantes", nuevoEstudiante, { headers: { Authorization: `Bearer ${token}` } })
             .then((res) => {
@@ -28,6 +30,7 @@ export const useEstudiante = () => {
             })
     }
     const eliminarEstudiante = (id) => {
+        const token = localStorage.getItem('token')
         api.delete(`/estudiantes/${id}`, { headers: { Authorization: `Bearer ${token}` } })
             .then(() => setEstudiantes(prev => prev.filter(e => e.id != id)))
             .catch((err) => {
@@ -35,6 +38,7 @@ export const useEstudiante = () => {
             })
     }
     const editarEstudiante = (id, estudianteActualizado) => {
+        const token = localStorage.getItem('token')
         return api.put(`/estudiantes/${id}`, estudianteActualizado, { headers: { Authorization: `Bearer ${token}` } })
             .then((res) => {
                 setEstudiantes(prev =>
