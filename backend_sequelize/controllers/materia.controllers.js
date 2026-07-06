@@ -1,4 +1,3 @@
-const { where } = require('sequelize')
 const Materia = require('../models/materia.models')
 
 module.exports.getAllMaterias = (_, res) => {
@@ -18,61 +17,53 @@ module.exports.createMateria = (req, res) => {
     const {nombre} = req.body
     Materia.create({nombre})
     .then((materiaNueva)=>res.json(materiaNueva))
-    .catch((err)=>err)
+    .catch((err)=> res.status(500).json({ mensaje: 'Error al crear la materia', error: err.message }))
 }
 
 module.exports.updateMateria = (req, res) => {
-    const {materiaId} = req.params
+    const { materiaId } = req.params
     const { nombre } = req.body;
-    
-    Materia.findByPk(id)
-        .then(materia => {
-            if (!materia) {
-                return res.status(404).json({
-                    success: false,
-                    message: `Materia con ID ${id} no encontrado`
-                });
-            }
-            return materia.update({ nombre, edad, url });
-        })
-        .then(materiaActualizado => {
-            res.status(200).json({
-                success: true,
-                message: 'Materia actualizada exitosamente',
-                data: materiaActualizado
-            });
-        })
-        .catch(err => {
-            res.status(500).json({
-                success: false,
-                message: 'Error al actualizar la materia',
-                error: err.message
-            });
-        });
-}
-module.exports.deleteMateria = (req, res) => {
-    const { materiaId } = req.params;
-    
+
     Materia.findByPk(materiaId)
         .then(materia => {
             if (!materia) {
                 return res.status(404).json({
-                    success: false,
-                    message: `Materia con ID ${id} no encontrado`
+                    mensaje: `Materia con ID ${materiaId} no encontrada`
                 });
             }
-            return Materia.destroy({ where: { materiaId } });
+            return materia.update({ nombre });
+        })
+        .then(materiaActualizada => {
+            res.json(materiaActualizada);
+        })
+        .catch(err => {
+            res.status(500).json({
+                mensaje: 'Error al actualizar la materia',
+                error: err.message
+            });
+        });
+}
+
+module.exports.deleteMateria = (req, res) => {
+    const { materiaId } = req.params;
+
+    Materia.findByPk(materiaId)
+        .then(materia => {
+            if (!materia) {
+                return res.status(404).json({
+                    mensaje: `Materia con ID ${materiaId} no encontrada`
+                });
+            }
+            return Materia.destroy({ where: { id: materiaId } });
         })
         .then(() => {
-            res.status(200).json({
-                success: true,
-                message: 'Materia eliminada exitosamente'
+            res.json({
+                mensaje: 'Materia eliminada exitosamente'
             });
         })
         .catch(err => {
             res.status(500).json({
-                success: false,
-                message: 'Error al eliminar la materia',
+                mensaje: 'Error al eliminar la materia',
                 error: err.message
             });
         });

@@ -26,6 +26,7 @@ const EstudiantePage = (props) => {
                     </div>
                 )
             }
+            <button onClick={() => navegar('/materias')}>Ver Materias</button>
             {rol === "admin" && (
                 <button onClick={() => navegar('/Usuarios')}>Ver Usuarios</button>
             )}
